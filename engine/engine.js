@@ -69,23 +69,14 @@ function initShaders() {
     shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
 }
 
-function makePBuffer(vertices){
+function makeBuffer(array,itemSize,numItems){
 	// thisVPB = thisVertexPositionBuffer
-	var thisVPB = gl.createBuffer(); // Creates the buffer
-	gl.bindBuffer(gl.ARRAY_BUFFER, thisVPB); 
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW); // Inputs data of position into buffer
-	thisVPB.itemSize = 3; // Temporarily 3/3 for triangles, may change for other shapes, does it change for strips?
-	thisVPB.numItems = 3;
-	return thisVPB;
-}
-
-function makeCBuffer(colors){
-    var thisVCB = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, thisVCB);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
-    thisVCB.itemSize = 4;
-    thisVCB.numItems = 3;
-    return thisVCB;
+	var thisBuffer = gl.createBuffer(); // Creates the buffer
+	gl.bindBuffer(gl.ARRAY_BUFFER, thisBuffer); 
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(array), gl.STATIC_DRAW); // Inputs data of position into buffer
+	thisBuffer.itemSize = itemSize; // Temporarily 3/3 for triangles, may change for other shapes, does it change for strips?
+	thisBuffer.numItems = numItems;
+	return thisBuffer;
 }
 
 var pMatrix = mat4.create(); // perspectiv
