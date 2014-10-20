@@ -23,8 +23,10 @@ function initData(data){
         0.0, 0.0, 1.0, 1.0,
         ],
         translation:[-1.0, 0.0, -7.0],
+        r:0,
+        d:[1,0,0],
         mvMatrix:mat4.create(), // Creates effectively a translation buffer, to use the translation
-	};
+    };
 	// It's possible could put the translation into mvMatrix here, but for now the translation is done within drawScene();
 	data[0].pBuffer=makeBuffer(data[0].position,3,3); // Here data is put into the buffer along with the buffer being created, is possible since this is reoccuring, could put it into the drawScene() function
     data[0].cBuffer=makeBuffer(data[0].colors,4,3);
@@ -36,11 +38,13 @@ function initData(data){
     	-1.0,  1.0,  0.0,
     	],
         colors:[
-        1.0, 0.0, 0.0, 1.0,
-        0.0, 1.0, 0.0, 1.0,
-        0.0, 0.0, 1.0, 1.0,
+        0.5, 0.5, 1.0, 1.0,
+        0.5, 0.5, 1.0, 1.0,
+        0.5, 0.5, 1.0, 1.0,
         ],
     	translation:[1.0,0.0,-7.0],
+        r:0,
+        d:[0,1,0],
     	mvMatrix:mat4.create(),
 	}
 	data[1].pBuffer=makeBuffer(data[1].position,3,3);

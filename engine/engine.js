@@ -93,15 +93,34 @@ function drawScene(items){
 	gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix); // Was previously setUniforms() line 1
 	for(i=0;i<items.length;i++){
 		mat4.translate(items[i].mvMatrix, items[i].translation); // This is what line 111 is talking about, and could be replaced
-		gl.bindBuffer(gl.ARRAY_BUFFER,items[i].pBuffer); // Here it uses it
+		mat4.rotate(items[i].mvMatrix, ((items[i].r*Math.PI)/180), items[i].d);
+        gl.bindBuffer(gl.ARRAY_BUFFER,items[i].pBuffer); // Here it uses it
 		gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, items[i].pBuffer.itemSize, gl.FLOAT, false, 0, 0); // and here
 		gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, items[i].mvMatrix); // Was previously setUniforms() line 2
-
         gl.bindBuffer(gl.ARRAY_BUFFER, items[i].cBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, items[i].cBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
         gl.drawArrays(gl.TRIANGLES, 0, items[i].pBuffer.numItems); // and here
 	}
+}
+
+var lastTime = 0;
+function animate(items) {
+    var timeNow = new Date().getTime();
+    if (lastTime != 0) {
+        var elapsed = timeNow - lastTime;
+
+        items[0].r += (90 * elapsed) / 1000.0;
+        items[1].r += (75 * elapsed) / 1000.0;
+    }
+    lastTime = timeNow;
+}
+
+function draw() { 
+    requestAnimationFrame(draw);
+    initViewport(triangles);
+    drawScene(triangles);
+    animate(triangles);
 }
 
 var triangles = [];
@@ -116,5 +135,7 @@ function webGLStart() {
   
     initData(triangles); // Defining data in triangles to be loaded
 	initViewport(triangles); // Setting viewport based on pMatrix, and clears previous drawing
-    drawScene(triangles); // Drawing the triangles
+    
+    draw();
+    //drawScene(triangles); // Drawing the triangles
 }
