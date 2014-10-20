@@ -109,9 +109,10 @@ function animate(items) {
     var timeNow = new Date().getTime();
     if (lastTime != 0) {
         var elapsed = timeNow - lastTime;
-
-        items[0].r += (90 * elapsed) / 1000.0;
-        items[1].r += (75 * elapsed) / 1000.0;
+        var add = (90 * elapsed) / 1000.0;
+        for(i=0;i<items.length;i++){
+            items[i].r += add;
+        }
     }
     lastTime = timeNow;
 }
