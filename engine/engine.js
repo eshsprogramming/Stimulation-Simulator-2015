@@ -100,8 +100,26 @@ function drawScene(items){
         gl.bindBuffer(gl.ARRAY_BUFFER, items[i].cBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, items[i].cBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-        gl.drawArrays(gl.TRIANGLES, 0, items[i].pBuffer.numItems); // and here
+        gl.drawArrays(items[i].drawType, 0, items[i].pBuffer.numItems); // and here
 	}
+}
+
+var neheTexture;
+function initTexture() {
+    neheTexture = gl.createTexture();
+    neheTexture.image = new Image();
+    neheTexture.image.onload = function() {
+        handleLoadedTexture(neheTexture);
+    }
+    neheTexture.image.src = "nehe.gif";
+}
+function handleLoadedTexture(texture) {
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.bindTexture(gl.TEXTURE_2D, null);
 }
 
 var lastTime = 0;
@@ -130,6 +148,7 @@ function webGLStart() {
 	var canvas = document.getElementById("my-canvas");
 	initGL(canvas);
 	initShaders();
+    initTexture();
 
     gl.clearColor(0.0,0.0,0.0,1.0);
     gl.enable(gl.DEPTH_TEST);
